@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>To Do List App</title>
+    <!-- build:css css/combined.css -->
+    <link rel="stylesheet" href="./vendor/bootstrap/dist/css/bootstrap.css">
+    <!-- inject:css -->
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <!-- endinject -->
+    <!-- endbuild -->
+  </head>
+  <body class="container">
+    <header class="row">
+      <h1 class="col-sm-12">To Do List App</h1>
+    </header>
+    <form id="taskForm">
+      <h2>Add New Task</h2>
+      <p>
+        <label for="toDoTask">Task Name</label>
+        <input name="toDoTask" type="text" placeholder="To Go Shopping" id="toDoTask"/>
+      </p>
+      <button type="button">Create Task</button>
+    </form>
+    <section>
+      <ul id="toDoList"></ul>
+    </section>
+    <footer>Developed by Group 5</footer>
+    <!-- build:js -->
+    <!-- inject:js -->
+    <script src="js/script.js"></script>
+    <!-- endinject -->
+    <!-- endbuild -->
+  </body>
+</html>

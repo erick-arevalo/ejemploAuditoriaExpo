@@ -1,0 +1,14 @@
+[
+    {
+        "name": "To Go shopping groceries",
+        "status": "toDo"
+    },
+    {
+        "name": "To Go running to the stadium at 5:00 pm",
+        "status": "toDo"
+    },
+    {
+        "name": "To Go to a job meeting at 10:00 am",
+        "status": "toDo"
+    }
+]
