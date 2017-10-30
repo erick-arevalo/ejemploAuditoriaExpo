@@ -22,7 +22,8 @@ gulp.task('server-dist',()=>
 {
     connect.server({
         root: 'dist',
-        livereload: true
+        livereload: true,
+        port: 9000
     });
 });
 
