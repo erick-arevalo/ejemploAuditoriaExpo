@@ -44,28 +44,6 @@ gulp.task('inject', () =>
                 .pipe(connect.reload());
 });
 
-// gulp.task('bower',() =>
-// {
-//     gulp.src('./app/index.html')
-//         .pipe(inject(gulp.src(bowerFiles(),{rad:false}),{name: 'bower'}))
-//         .pipe(inject(es.merge(
-//             gulp.src('./app/css/*.css', {read: false}),
-//             gulp.src('./app/js/*.js', {read: false})
-//         )))
-//         .pipe(gulp.dest('./app'))
-//         .pipe(connect.reload());
-// });
-
-//Elimina el CSS que no es utilizado
-// gulp.task('uncss',() =>
-// {
-//     return gulp.src('dist/css/combined.css')
-//         .pipe(uncss({
-//             html: 'app/index.html'
-//         }))
-//         .pipe(gulp.dest('./dist/css'));
-// });
-
 //Unir archivos js y css
 gulp.task('compress',() =>
 {
@@ -83,7 +61,7 @@ gulp.task('minify-css', () => {
 });
 
 //comprimir archivo js
-gulp.task('min-js', function (cb) {
+gulp.task('min-js', (cb) => {
     pump([
         gulp.src('app/js/combined.js'),
         uglify(),
