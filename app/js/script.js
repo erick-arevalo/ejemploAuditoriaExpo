@@ -1,73 +1,75 @@
-var toDoList = document.getElementById("toDoList"),
-tasksList;
+var tasksList   = new Array();
 
-function newAjax()
+jQuery(document).ready(start);
+
+function start()
 {
-	var xmlhttp=false;
-	try
-	{
-		xmlhttp = new ActivexObject('Msxml2.XMLHTTP');
-	} catch(e)
-	{
-		try
-		{
-			xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-		} catch(e)
-		{
-			xmlhttp = false;
-		}
-	}
+    console.log('Started...');
+    var toDoList    = jQuery('#toDoList'),
+        taskInput   = jQuery('#taskForm');
 
-	if (!xmlhttp && typeof XMLHttpRequest != 'undefined')
-	{
-		xmlhttp = new XMLHttpRequest();
-	}
-	return xmlhttp;
-}
-
-function getTasks(){
-    let ajax = newAjax();
-    ajax.open("GET","data/data.json",true);
-    ajax.onreadystatechange = () =>
-    {
-        if(ajax.readyState = 4)
+    jQuery.ajax({
+        'url': 'data/data.json',
+        'type': 'get',
+        'datatype': 'json',
+        'success': function(data)
         {
-            if(typeof tasksList === undefined)
+            if(typeof data.tasks === 'object' && data.tasks.length === 0) 
             {
-                tasksList = []
-            }
-            else {
-                tasksList = JSON.parse(ajax.responseText);
-            }
+                console.log("There is no data");
+            } else 
+            {                
+                data.tasks.forEach(function(value,index)
+                {
+                    createTask(toDoList, value,index);
+                });
+            }            
+        },
+        "error": function(jqXHR, status, error) {
+            console.log("status:", status, "error:", error);
         }
+    });
 
-        if(typeof tasksList === undefined) {
-            console.log("There is no data");
-        } else {
-            tasksList.forEach((value,index)=>{
-                let listItem = document.createElement("li");
-                listItem.setAttribute("data-id",index);
-                listItem.setAttribute("class","toDoList-item");
-                listItem.textContent = value.name;
-                toDoList.appendChild(listItem);
-            });
+    taskInput.on('submit', function(e) {
+        e.preventDefault();
+        createTask(toDoList);
+    })
+
+    toDoList.on('click', function(e)
+    {
+        var element =   jQuery(e.target);
+        
+        if(element.attr('type') === 'checkbox' && !element.attr('checked')) {
+            element.parent().addClass('done');
+            element.attr('disabled',true);
+            alert("Done!!");
         }
+    });
+}
+
+function createTask(toDoList, value, index) {
+    var listItem = jQuery(document.createElement("li")),
+        taskInput = jQuery("#toDoTask"),
+        task = {"status":"toDo"},
+        chkBox = jQuery(document.createElement('input'));
+    
+    chkBox.attr('type',"checkbox");
+
+    if(typeof value === 'undefined' && typeof index === 'undefined')
+    {
+        task.name =taskInput.val();
+        tasksList.push(task);
+        
+    } else
+    {
+        task.name =value.name;
+        task.status = value.status;
+        listItem.attr("data-id",index);
     }
-    ajax.send(null)
-}
-
-function createTask() {
-    let listItem = document.createElement("li");
-
-}
-
-function start() {
-    getTasks();
-    console.log(typeof tasksList);
-    console.log(tasksList);
-}
-
-window.onload = () => 
-{
-    start();
+    
+    listItem.attr("class","toDoList-item");    
+    listItem.text(task.name);
+    listItem.append(chkBox);
+    toDoList.append(listItem);
+    tasksList.push(task);
 }

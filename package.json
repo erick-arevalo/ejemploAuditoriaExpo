@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.html",
   "dependencies": {
-    "bootstrap": "^3.3.7"
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "pump": "^1.0.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",

@@ -5,7 +5,8 @@ var gulp                = require('gulp'),
     minifyCss           = require('gulp-clean-css'),
     useref              = require('gulp-useref'),
     uglify              = require('gulp-uglify'),
-    uncss               = require('gulp-uncss');
+    uncss               = require('gulp-uncss'),
+    pump                = require('pump');
 
 //Servidor web de desarrollo
 gulp.task('server',() =>
@@ -55,25 +56,42 @@ gulp.task('inject', () =>
 // });
 
 //Elimina el CSS que no es utilizado
-gulp.task('uncss',() =>
-{
-    return gulp.src('dist/css/combined.css')
-        .pipe(uncss({
-            html: 'app/index.html'
-        }))
-        .pipe(gulp.dest('./dist/css'));
-});
+// gulp.task('uncss',() =>
+// {
+//     return gulp.src('dist/css/combined.css')
+//         .pipe(uncss({
+//             html: 'app/index.html'
+//         }))
+//         .pipe(gulp.dest('./dist/css'));
+// });
 
-//Comprimir archivos js y css
+//Unir archivos js y css
 gulp.task('compress',() =>
 {
     return gulp.src('app/index.html')
-        .pipe(assets)
+//        .pipe(assets)
         .pipe(useref())
-        .pipe(gulpif('*.js',uglify()))
-        .pipe(gulpif('*.css',minifyCss()))
-        .pipe(gulp.dest('./dist'));
+        .pipe(gulp.dest('./app'));
 });
+
+//Comprimir archivos css
+gulp.task('minify-css', () => {
+    return gulp.src('app/css/combined.css')
+      .pipe(minifyCss({compatibility: 'ie8'}))
+      .pipe(gulp.dest('dist/css'));
+});
+
+//comprimir archivo js
+gulp.task('min-js', function (cb) {
+    pump([
+        gulp.src('app/js/combined.js'),
+        uglify(),
+        gulp.dest('dist/js')
+        ],
+        cb
+    );
+});
+
 
 //Realiza copia del index.html a la carpeta dist sin comentarios y con los nuevos enlaces
 gulp.task('copy',() => 
@@ -81,7 +99,14 @@ gulp.task('copy',() =>
     gulp.src('./app/index.html')
         .pipe(useref())
         .pipe(gulp.dest('./dist'));
-})
+});
+
+//Realiza copia de la data al dist
+gulp.task('copy-data',() => 
+{
+    gulp.src('./app/data/*')        
+        .pipe(gulp.dest('./dist/data'));
+});
 
 //Vigila los cambios que se produzcan en el proyecto
 gulp.task('watch', () =>
@@ -92,4 +117,4 @@ gulp.task('watch', () =>
 });
 
 gulp.task('default', ['server','inject','watch']);
-gulp.task('build', ['compress','copy','uncss']);
+gulp.task('build', ['compress','copy','copy-data', 'minify-css','min-js','server-dist']);

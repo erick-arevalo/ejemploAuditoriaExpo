@@ -1,4 +1,19 @@
-h1
+footer
 {
-    text-align: center;
+    text-align: right;
+}
+
+.done
+{
+    text-decoration: line-through;
+}
+
+li.toDoList-item
+{    
+    width: 50%;
+}
+
+.toDoList-item > input[type='checkbox']
+{
+    float: right;
 }
