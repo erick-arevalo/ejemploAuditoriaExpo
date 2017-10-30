@@ -42,7 +42,6 @@ function start()
         if(element.attr('type') === 'checkbox' && !element.attr('checked')) {
             element.parent().addClass('done');
             element.attr('disabled',true);
-            alert("Done!!");
         }
     });
 }
