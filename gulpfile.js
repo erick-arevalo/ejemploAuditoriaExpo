@@ -1,6 +1,6 @@
 var gulp                = require('gulp'),
-    connect             = require('gulp-connect'),
-    inject              = require('gulp-inject'),
+    connect             = require('gulp-connect'), //Gulp plugin para correr un servidor web (con LiveReload).
+    inject              = require('gulp-inject'), //Plugin para inyectar referencias a hojas de estilo, javascript y otros componentes.
     gulpif              = require('gulp-if'),
     minifyCss           = require('gulp-clean-css'),
     useref              = require('gulp-useref'),
